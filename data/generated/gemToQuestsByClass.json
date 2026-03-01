@@ -1,0 +1,112 @@
+{
+  "Marauder": {
+    "ground slam": [
+      "enemy-at-the-gate"
+    ],
+    "molten strike": [
+      "enemy-at-the-gate"
+    ],
+    "heavy strike": [
+      "enemy-at-the-gate"
+    ],
+    "chance to bleed support": [
+      "mercy-mission"
+    ],
+    "ruthless support": [
+      "mercy-mission"
+    ]
+  },
+  "Ranger": {
+    "split arrow": [
+      "enemy-at-the-gate"
+    ],
+    "burning arrow": [
+      "enemy-at-the-gate"
+    ],
+    "caustic arrow": [
+      "enemy-at-the-gate"
+    ],
+    "pierce support": [
+      "mercy-mission"
+    ],
+    "onslaught support": [
+      "mercy-mission"
+    ]
+  },
+  "Witch": {
+    "freezing pulse": [
+      "enemy-at-the-gate"
+    ],
+    "spark": [
+      "enemy-at-the-gate"
+    ],
+    "fireball": [
+      "enemy-at-the-gate"
+    ],
+    "arcane surge support": [
+      "mercy-mission"
+    ],
+    "added lightning damage support": [
+      "mercy-mission"
+    ]
+  },
+  "Duelist": {
+    "cleave": [
+      "enemy-at-the-gate"
+    ],
+    "double strike": [
+      "enemy-at-the-gate"
+    ],
+    "perforate": [
+      "enemy-at-the-gate"
+    ],
+    "maim support": [
+      "mercy-mission"
+    ],
+    "chance to bleed support": [
+      "mercy-mission"
+    ]
+  },
+  "Templar": {
+    "glacial hammer": [
+      "enemy-at-the-gate"
+    ],
+    "smite": [
+      "enemy-at-the-gate"
+    ],
+    "holy flame totem": [
+      "enemy-at-the-gate"
+    ],
+    "added fire damage support": [
+      "mercy-mission"
+    ],
+    "arcane surge support": [
+      "mercy-mission"
+    ]
+  },
+  "Shadow": {
+    "ethereal knives": [
+      "enemy-at-the-gate"
+    ],
+    "frost blades": [
+      "enemy-at-the-gate"
+    ],
+    "explosive trap": [
+      "enemy-at-the-gate"
+    ],
+    "added cold damage support": [
+      "mercy-mission"
+    ],
+    "onslaught support": [
+      "mercy-mission"
+    ]
+  },
+  "Scion": {
+    "spectral throw": [
+      "enemy-at-the-gate"
+    ],
+    "onslaught support": [
+      "mercy-mission"
+    ]
+  }
+}

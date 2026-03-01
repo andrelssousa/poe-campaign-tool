@@ -1,0 +1,9 @@
+{
+  "gems": {
+    "ground slam": { "en": "Ground Slam", "pt-BR": "Ground Slam" },
+    "molten strike": { "en": "Molten Strike", "pt-BR": "Molten Strike" }
+  },
+  "flasks": {
+    "small life flask": { "en": "Small Life Flask", "pt-BR": "Frasco de Vida Pequeno" }
+  }
+}

@@ -1,0 +1,41 @@
+# ACT 1
+
+QUEST: Enemy at the Gate | id=enemy-at-the-gate | optional=false
+STEPS:
+- Kill Hillock in the Twilight Strand
+- Enter Lioneye's Watch
+MOMENT: Turn in to Tarkleigh | npc=Tarkleigh
+REWARD: gem_choice | id=gems.enemy-at-the-gate.starting | label=Starting skill gem (class-dependent)
+CLASS: Marauder = Ground Slam, Molten Strike, Heavy Strike
+CLASS: Ranger = Split Arrow, Burning Arrow, Caustic Arrow
+CLASS: Witch = Freezing Pulse, Spark, Fireball
+CLASS: Duelist = Cleave, Double Strike, Perforate
+CLASS: Templar = Glacial Hammer, Smite, Holy Flame Totem
+CLASS: Shadow = Ethereal Knives, Frost Blades, Explosive Trap
+CLASS: Scion = Spectral Throw
+
+QUEST: Mercy Mission | id=mercy-mission | optional=false
+STEPS:
+- Go to Tidal Island
+- Kill Hailrake
+- Return the Medicine Chest to town
+MOMENT: Turn in to Tarkleigh | npc=Tarkleigh
+REWARD: flask_choice | id=flask.mercy-mission | label=Quicksilver Flask (reward choice)
+CHOICES: Quicksilver Flask
+MOMENT: Turn in to Nessa | npc=Nessa
+REWARD: gem_choice | id=gems.mercy-mission.supports | label=Support gem reward (class-dependent)
+CLASS: Marauder = Chance to Bleed Support, Ruthless Support
+CLASS: Ranger = Pierce Support, Onslaught Support
+CLASS: Witch = Arcane Surge Support, Added Lightning Damage Support
+CLASS: Duelist = Maim Support, Chance to Bleed Support
+CLASS: Templar = Added Fire Damage Support, Arcane Surge Support
+CLASS: Shadow = Added Cold Damage Support, Onslaught Support
+CLASS: Scion = Onslaught Support
+
+QUEST: The Dweller of the Deep | id=the-dweller-of-the-deep | optional=true
+STEPS:
+- Enter the Flooded Depths
+- Kill the Dweller of the Deep
+- Return to town
+REWARDS:
+- book_of_skill | id=books.skill.dweller | label=Book of Skill (+1 passive skill point)

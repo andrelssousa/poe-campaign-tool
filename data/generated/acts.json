@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "Act 1",
+    "slug": "act-1",
+    "questsInOrder": [
+      "enemy-at-the-gate",
+      "mercy-mission",
+      "the-dweller-of-the-deep"
+    ]
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "Act 1",
+    "slug": "act-1",
+    "questsInOrder": [
+      "enemy-at-the-gate",
+      "mercy-mission",
+      "breaking-some-eggs",
+      "the-caged-brute",
+      "the-sirens-cadence",
+      "the-dweller-of-the-deep",
+      "the-marooned-mariner",
+      "a-dirty-job",
+      "the-way-forward"
+    ]
+  }
+]

@@ -1,0 +1,86 @@
+{
+  "ground slam": [
+    "enemy-at-the-gate"
+  ],
+  "molten strike": [
+    "enemy-at-the-gate"
+  ],
+  "heavy strike": [
+    "enemy-at-the-gate"
+  ],
+  "split arrow": [
+    "enemy-at-the-gate"
+  ],
+  "burning arrow": [
+    "enemy-at-the-gate"
+  ],
+  "caustic arrow": [
+    "enemy-at-the-gate"
+  ],
+  "freezing pulse": [
+    "enemy-at-the-gate"
+  ],
+  "spark": [
+    "enemy-at-the-gate"
+  ],
+  "fireball": [
+    "enemy-at-the-gate"
+  ],
+  "cleave": [
+    "enemy-at-the-gate"
+  ],
+  "double strike": [
+    "enemy-at-the-gate"
+  ],
+  "perforate": [
+    "enemy-at-the-gate"
+  ],
+  "glacial hammer": [
+    "enemy-at-the-gate"
+  ],
+  "smite": [
+    "enemy-at-the-gate"
+  ],
+  "holy flame totem": [
+    "enemy-at-the-gate"
+  ],
+  "ethereal knives": [
+    "enemy-at-the-gate"
+  ],
+  "frost blades": [
+    "enemy-at-the-gate"
+  ],
+  "explosive trap": [
+    "enemy-at-the-gate"
+  ],
+  "spectral throw": [
+    "enemy-at-the-gate"
+  ],
+  "chance to bleed support": [
+    "mercy-mission"
+  ],
+  "ruthless support": [
+    "mercy-mission"
+  ],
+  "pierce support": [
+    "mercy-mission"
+  ],
+  "onslaught support": [
+    "mercy-mission"
+  ],
+  "arcane surge support": [
+    "mercy-mission"
+  ],
+  "added lightning damage support": [
+    "mercy-mission"
+  ],
+  "maim support": [
+    "mercy-mission"
+  ],
+  "added fire damage support": [
+    "mercy-mission"
+  ],
+  "added cold damage support": [
+    "mercy-mission"
+  ]
+}

@@ -1,0 +1,48 @@
+[
+  {
+    "id": "enemy-at-the-gate",
+    "actId": 1,
+    "name": "Enemy at the Gate",
+    "isOptional": false,
+    "steps": ["Kill Hillock in the Twilight Strand", "Enter Lioneye's Watch"],
+    "rewards": [
+      {
+        "type": "gem_choice",
+        "id": "gems.enemy-at-the-gate.starting",
+        "label": "Starting skill gem (class-dependent)",
+        "choicesByClass": {}
+      }
+    ]
+  },
+  {
+    "id": "mercy-mission",
+    "actId": 1,
+    "name": "Mercy Mission",
+    "isOptional": false,
+    "steps": ["Go to Tidal Island", "Kill Hailrake", "Return the Medicine Chest to town"],
+    "rewards": [
+      {
+        "type": "flask_choice",
+        "id": "flasks.mercy-mission.choice",
+        "label": "Flask reward (choose one)",
+        "choices": ["Quicksilver Flask", "Medium Life Flask", "Medium Mana Flask"]
+      },
+      {
+        "type": "gem_choice",
+        "id": "gems.mercy-mission.supports",
+        "label": "Support gem reward (class-dependent)",
+        "choicesByClass": {}
+      }
+    ]
+  },
+  {
+    "id": "the-dweller-of-the-deep",
+    "actId": 1,
+    "name": "The Dweller of the Deep",
+    "isOptional": true,
+    "steps": ["Enter the Flooded Depths", "Kill the Dweller of the Deep", "Return to town"],
+    "rewards": [
+      { "type": "book_of_skill", "id": "books.skill.dweller", "label": "Book of Skill (+1 passive skill point)" }
+    ]
+  }
+]

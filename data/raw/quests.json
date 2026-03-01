@@ -1,0 +1,145 @@
+[
+  {
+    "id": "enemy-at-the-gate",
+    "name": "Enemy at the Gate",
+    "actId": 1,
+    "isOptional": false,
+    "steps": [
+      "Kill Hillock in the Twilight Strand",
+      "Enter Lioneye's Watch"
+    ],
+    "rewardMoments": [
+      {
+        "when": "Turn in to Tarkleigh",
+        "npc": "Tarkleigh",
+        "rewards": [
+          {
+            "type": "gem_choice",
+            "id": "gems.enemy-at-the-gate.starting",
+            "label": "Starting skill gem (class-dependent)",
+            "choicesByClass": {
+              "Marauder": [
+                "Ground Slam",
+                "Molten Strike",
+                "Heavy Strike"
+              ],
+              "Ranger": [
+                "Split Arrow",
+                "Burning Arrow",
+                "Caustic Arrow"
+              ],
+              "Witch": [
+                "Freezing Pulse",
+                "Spark",
+                "Fireball"
+              ],
+              "Duelist": [
+                "Cleave",
+                "Double Strike",
+                "Perforate"
+              ],
+              "Templar": [
+                "Glacial Hammer",
+                "Smite",
+                "Holy Flame Totem"
+              ],
+              "Shadow": [
+                "Ethereal Knives",
+                "Frost Blades",
+                "Explosive Trap"
+              ],
+              "Scion": [
+                "Spectral Throw"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mercy-mission",
+    "name": "Mercy Mission",
+    "actId": 1,
+    "isOptional": false,
+    "steps": [
+      "Go to Tidal Island",
+      "Kill Hailrake",
+      "Return the Medicine Chest to town"
+    ],
+    "rewardMoments": [
+      {
+        "when": "Turn in to Tarkleigh",
+        "npc": "Tarkleigh",
+        "rewards": [
+          {
+            "type": "flask_choice",
+            "id": "flask.mercy-mission",
+            "label": "Quicksilver Flask (reward choice)",
+            "choices": [
+              "Quicksilver Flask"
+            ]
+          }
+        ]
+      },
+      {
+        "when": "Turn in to Nessa",
+        "npc": "Nessa",
+        "rewards": [
+          {
+            "type": "gem_choice",
+            "id": "gems.mercy-mission.supports",
+            "label": "Support gem reward (class-dependent)",
+            "choicesByClass": {
+              "Marauder": [
+                "Chance to Bleed Support",
+                "Ruthless Support"
+              ],
+              "Ranger": [
+                "Pierce Support",
+                "Onslaught Support"
+              ],
+              "Witch": [
+                "Arcane Surge Support",
+                "Added Lightning Damage Support"
+              ],
+              "Duelist": [
+                "Maim Support",
+                "Chance to Bleed Support"
+              ],
+              "Templar": [
+                "Added Fire Damage Support",
+                "Arcane Surge Support"
+              ],
+              "Shadow": [
+                "Added Cold Damage Support",
+                "Onslaught Support"
+              ],
+              "Scion": [
+                "Onslaught Support"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the-dweller-of-the-deep",
+    "name": "The Dweller of the Deep",
+    "actId": 1,
+    "isOptional": true,
+    "steps": [
+      "Enter the Flooded Depths",
+      "Kill the Dweller of the Deep",
+      "Return to town"
+    ],
+    "rewards": [
+      {
+        "type": "book_of_skill",
+        "id": "books.skill.dweller",
+        "label": "Book of Skill (+1 passive skill point)"
+      }
+    ]
+  }
+]
