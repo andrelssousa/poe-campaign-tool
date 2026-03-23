@@ -1,4 +1,4 @@
-// components/features/ActsIndexClient.tsx
+// src/components/features/ActsIndexClient.tsx
 "use client";
 
 import { useMemo } from "react";
@@ -17,9 +17,7 @@ export function ActsIndexClient({
       id: Number(a.id),
       name: String(a.name ?? `Act ${a.id}`),
       slug: a.slug ? String(a.slug) : undefined,
-      questsInOrder: Array.isArray(a.questsInOrder)
-        ? a.questsInOrder
-        : [],
+      questsInOrder: Array.isArray(a.questsInOrder) ? a.questsInOrder : [],
     }));
   }, [acts]);
 

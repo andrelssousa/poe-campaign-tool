@@ -100,3 +100,42 @@ body {
 .stl-quest-flash {
   animation: stlQuestFlash 900ms ease-out 1;
 }
+
+/* ---- Quest highlight ping (deep-link from Rewards) ---- */
+
+@keyframes stlPing {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.0;
+  }
+  20% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0.0;
+  }
+}
+
+.stl-ping-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stl-ping-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.95); /* amber */
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+}
+
+.stl-ping-ring {
+  position: absolute;
+  inset: -7px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  animation: stlPing 900ms ease-out infinite;
+}

@@ -3,8 +3,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-type Language = "en" | "pt-BR";
+import type { Language } from "@/lib/i18n";
 
 type ProgressSnapshot = {
   completedCount: number;
@@ -46,11 +45,7 @@ function sameSnapshot(a: ProgressSnapshot | null, b: ProgressSnapshot | null) {
   if (a === b) return true;
   if (!a || !b) return false;
   // IMPORTANT: ignore updatedAt for equality checks (it changes constantly)
-  return (
-    a.completedCount === b.completedCount &&
-    a.xpEarned === b.xpEarned &&
-    a.level === b.level
-  );
+  return a.completedCount === b.completedCount && a.xpEarned === b.xpEarned && a.level === b.level;
 }
 
 export const useAppStore = create<StoreState>()(
@@ -69,25 +64,28 @@ export const useAppStore = create<StoreState>()(
 
       // filters
       showUncompletedOnly: false,
-      toggleShowUncompletedOnly: () =>
-        set({ showUncompletedOnly: !get().showUncompletedOnly }),
+      toggleShowUncompletedOnly: () => set((state) => ({ showUncompletedOnly: !state.showUncompletedOnly })),
 
       // progress
       completedQuestIds: {},
       isQuestCompleted: (questId) => !!get().completedQuestIds[questId],
-      toggleQuestCompleted: (questId) => {
-        const current = get().completedQuestIds;
-        const next = { ...current, [questId]: !current[questId] };
-        set({ completedQuestIds: next });
-      },
+      toggleQuestCompleted: (questId) =>
+        set((state) => {
+          const currentValue = !!state.completedQuestIds[questId];
+          return {
+            completedQuestIds: {
+              ...state.completedQuestIds,
+              [questId]: !currentValue,
+            },
+          };
+        }),
 
       // snapshot
       progressSnapshot: null,
       setProgressSnapshot: (snap) =>
         set((state) => {
-          if (sameSnapshot(state.progressSnapshot, snap)) return state;
-          // store updatedAt too, but don't use it to decide "changed"
-          return { progressSnapshot: snap };
+          if (sameSnapshot(state.progressSnapshot, snap)) return state; // no-op
+          return { ...state, progressSnapshot: snap };
         }),
       clearProgressSnapshot: () => set({ progressSnapshot: null }),
 
@@ -108,7 +106,8 @@ export const useAppStore = create<StoreState>()(
         completedQuestIds: state.completedQuestIds,
         progressSnapshot: state.progressSnapshot,
       }),
-      onRehydrateStorage: () => (state) => {
+      onRehydrateStorage: () => (state, error) => {
+        if (error) console.error("Hydration error:", error);
         state?.setHasHydrated();
       },
     }

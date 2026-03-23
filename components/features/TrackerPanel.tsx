@@ -27,13 +27,12 @@ type RewardMoment = {
 type Quest = {
   id: string;
   name: LString;
+  actId: number;
   isOptional: boolean;
   steps: LString[];
   rewards?: Reward[];
   rewardMoments?: RewardMoment[];
 };
-
-const LS_KEY = "poe_tracker_last_completed_count";
 
 export function TrackerPanel({
   totalQuests,
@@ -60,30 +59,34 @@ export function TrackerPanel({
     return overallProgress(completedQuestIds, totalQuests);
   }, [completedQuestIds, totalQuests, hasHydrated]);
 
-  // "Since last visit" delta (localStorage only; no store writes)
+  // "Since last visit" delta (store snapshot; persists with zustand persist)
+  const progressSnapshot = useAppStore((s) => s.progressSnapshot);
+  const setProgressSnapshot = useAppStore((s) => s.setProgressSnapshot);
+
   const [sinceLast, setSinceLast] = useState<number>(0);
 
   useEffect(() => {
     if (!hasHydrated) return;
 
-    let prev = 0;
-    try {
-      const raw = window.localStorage.getItem(LS_KEY);
-      prev = raw ? Number(raw) : 0;
-      if (!Number.isFinite(prev)) prev = 0;
-    } catch {
-      prev = 0;
-    }
+    const prevCompleted = progressSnapshot?.completedCount ?? 0;
+    const delta = completedCount - prevCompleted;
 
-    const delta = completedCount - prev;
     setSinceLast(delta > 0 ? delta : 0);
 
-    try {
-      window.localStorage.setItem(LS_KEY, String(completedCount));
-    } catch {
-      // ignore
-    }
-  }, [completedCount, hasHydrated]);
+    // v0 snapshot: keep it consistent with your "XP-style" display
+    setProgressSnapshot({
+      completedCount,
+      xpEarned: completedCount,
+      level: overall.level,
+      updatedAt: Date.now(),
+    });
+  }, [
+    completedCount,
+    hasHydrated,
+    overall.level,
+    progressSnapshot?.completedCount,
+    setProgressSnapshot,
+  ]);
 
   const completedQuestList = useMemo(() => {
     if (!hasHydrated) return [];
@@ -93,8 +96,8 @@ export function TrackerPanel({
       .map((id) => questById[id])
       .filter(Boolean)
       .sort((a, b) => {
-        const actA = (a as any).actId ?? 0;
-        const actB = (b as any).actId ?? 0;
+        const actA = a.actId ?? 0;
+        const actB = b.actId ?? 0;
         if (actA !== actB) return actA - actB;
         return l(language, a.name).localeCompare(l(language, b.name));
       });
@@ -143,9 +146,6 @@ export function TrackerPanel({
           <button
             onClick={() => {
               resetProgress();
-              try {
-                window.localStorage.setItem(LS_KEY, "0");
-              } catch {}
               setSinceLast(0);
             }}
             className="mt-4 rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40"
@@ -163,7 +163,7 @@ export function TrackerPanel({
             </span>
 
             <span className="text-xs text-zinc-500">
-              {t(language, "tracker_xp")} {overall.done}/{overall.total}
+              {t(language, "common_progress")}: {overall.done}/{overall.total}
             </span>
           </div>
 

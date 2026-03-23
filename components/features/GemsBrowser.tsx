@@ -1,9 +1,9 @@
-// components/features/GemsBrowser.tsx
+// src/components/features/GemsBrowser.tsx
 "use client";
 
 import { useMemo, useState } from "react";
 import { useAppStore } from "@/store/useAppStore";
-import { t } from "@/lib/i18n";
+import { t, type Language } from "@/lib/i18n";
 import { type LString, l } from "@/lib/l10n";
 
 type RewardChoices = {
@@ -18,28 +18,19 @@ type Props = {
 };
 
 function toTitleCase(s: string) {
-  // best-effort: "freezing pulse" -> "Freezing Pulse"
   return s
     .split(" ")
     .map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w))
     .join(" ");
 }
 
-function gemLabel(
-  language: import("@/lib/i18n").Language,
-  rewardChoices: RewardChoices | undefined,
-  gemKey: string
-) {
+function gemLabel(language: Language, rewardChoices: RewardChoices | undefined, gemKey: string) {
   const entry = rewardChoices?.gems?.[gemKey];
   if (entry) return l(language, entry);
   return toTitleCase(gemKey);
 }
 
-export function GemsBrowser({
-  gemToQuestsByClass,
-  questById,
-  rewardChoices,
-}: Props) {
+export function GemsBrowser({ gemToQuestsByClass, questById, rewardChoices }: Props) {
   const selectedClass = useAppStore((s) => s.selectedClass);
   const language = useAppStore((s) => s.language);
   const [q, setQ] = useState("");
@@ -104,19 +95,12 @@ export function GemsBrowser({
           </div>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="mt-4 text-sm text-zinc-400">
-          {t(language, "noMatches")}
-        </div>
+        <div className="mt-4 text-sm text-zinc-400">{t(language, "noMatches")}</div>
       ) : (
         <div className="mt-4 space-y-3">
           {filtered.slice(0, 200).map((gemKey) => (
-            <div
-              key={gemKey}
-              className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4"
-            >
-              <div className="font-semibold">
-                {gemLabel(language, rewardChoices, gemKey)}
-              </div>
+            <div key={gemKey} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
+              <div className="font-semibold">{gemLabel(language, rewardChoices, gemKey)}</div>
 
               <div className="mt-2 flex flex-wrap gap-2">
                 {(classIndex[gemKey] || []).map((qid) => (

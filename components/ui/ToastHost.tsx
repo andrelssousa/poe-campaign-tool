@@ -50,7 +50,6 @@ function kindClasses(kind: ToastKind) {
 
 export function ToastHost() {
   const toasts = useToastStore((s) => s.toasts);
-  const remove = useToastStore((s) => s.remove);
 
   return (
     <div
@@ -59,28 +58,30 @@ export function ToastHost() {
       aria-relevant="additions"
     >
       {toasts.map((t) => (
-        <ToastItem key={t.id} toast={t} onDone={() => remove(t.id)} />
+        <ToastItem key={t.id} toast={t} />
       ))}
     </div>
   );
 }
 
-function ToastItem({ toast, onDone }: { toast: Toast; onDone: () => void }) {
+function ToastItem({ toast }: { toast: Toast }) {
   const language = useAppStore((s) => s.language);
+  const remove = useToastStore((s) => s.remove);
+
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
     const a = window.setTimeout(() => setOpen(false), toast.ms);
-    const b = window.setTimeout(() => onDone(), toast.ms + 180);
+    const b = window.setTimeout(() => remove(toast.id), toast.ms + 180);
     return () => {
       window.clearTimeout(a);
       window.clearTimeout(b);
     };
-  }, [toast.ms, onDone]);
+  }, [toast.id, toast.ms, remove]);
 
   function dismiss() {
     setOpen(false);
-    window.setTimeout(onDone, 180);
+    window.setTimeout(() => remove(toast.id), 180);
   }
 
   const dismissLabel = t(language, "common_dismiss");

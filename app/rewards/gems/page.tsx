@@ -1,19 +1,19 @@
-// src/app/rewards/gems/page.tsx
+// app/rewards/gems/page.tsx
 import { readGenerated } from "@/lib/readGenerated.server";
 import { GemsBrowser } from "@/components/features/GemsBrowser";
 import { ClientT } from "@/components/ui/ClientT";
+import type { LString } from "@/lib/l10n";
 
 export default function GemsIndex() {
-  const gemToQuestsByClass = readGenerated<
-    Record<string, Record<string, string[]>>
-  >("gemToQuestsByClass.json");
-  const questById =
-    readGenerated<
-      Record<string, { id: string; name: import("@/lib/l10n").LString }>
-    >("questById.json");
+  const gemToQuestsByClass = readGenerated<Record<string, Record<string, string[]>>>(
+    "gemToQuestsByClass.json"
+  );
+
+  const questById = readGenerated<Record<string, { id: string; name: LString }>>("questById.json");
+
   const rewardChoices = readGenerated<{
-    gems?: Record<string, import("@/lib/l10n").LString>;
-    flasks?: Record<string, import("@/lib/l10n").LString>;
+    gems?: Record<string, LString>;
+    flasks?: Record<string, LString>;
   }>("rewardChoices.l10n.json");
 
   return (

@@ -29,6 +29,7 @@ const TYPES = [
 ] as const;
 
 const PAGE_SIZE = 50;
+
 function buildUrl(pathname: string, params: URLSearchParams) {
   const qs = params.toString();
   return `${pathname}${qs ? `?${qs}` : ""}`;
@@ -159,10 +160,7 @@ export function RewardsBrowser({ rewardsIndex }: { rewardsIndex: RewardRow[] }) 
         if (!query) return true;
 
         // Search label + quest name + (for gems) class choices + choices list
-        const hay = [
-          l(language, r.label),
-          l(language, r.questName),
-        ]
+        const hay = [l(language, r.label), l(language, r.questName)]
           .join(" ")
           .toLowerCase();
 
@@ -279,17 +277,28 @@ export function RewardsBrowser({ rewardsIndex }: { rewardsIndex: RewardRow[] }) 
 
             <div className="text-sm text-zinc-400">
               {t(language, "rewards_showing")}{" "}
-              <span className="font-semibold text-zinc-200">{filtered.length}</span>
+              <span className="font-semibold text-zinc-200">
+                {filtered.length}
+              </span>
               {filtered.length ? (
                 <>
                   {" "}
                   • {t(language, "rewards_page")}{" "}
-                  <span className="font-semibold text-zinc-200">{safePage}</span>/
-                  <span className="font-semibold text-zinc-200">{totalPages}</span>
+                  <span className="font-semibold text-zinc-200">
+                    {safePage}
+                  </span>
+                  /
+                  <span className="font-semibold text-zinc-200">
+                    {totalPages}
+                  </span>
                 </>
               ) : null}{" "}
-              • <span className="text-zinc-500">{t(language, "common_classLabel")}:</span>{" "}
-              <span className="font-semibold text-zinc-200">{selectedClass}</span>
+              • <span className="text-zinc-500">
+                {t(language, "common_classLabel")}:
+              </span>{" "}
+              <span className="font-semibold text-zinc-200">
+                {selectedClass}
+              </span>
             </div>
 
             <button
@@ -359,7 +368,9 @@ export function RewardsBrowser({ rewardsIndex }: { rewardsIndex: RewardRow[] }) 
               className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-4"
             >
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <div className="font-semibold text-white">{l(language, r.label)}</div>
+                <div className="font-semibold text-white">
+                  {l(language, r.label)}
+                </div>
                 <div className="flex items-center gap-2 text-xs text-zinc-400">
                   <span>
                     {t(language, "rewards_actLabel")} {r.actId}
@@ -374,15 +385,35 @@ export function RewardsBrowser({ rewardsIndex }: { rewardsIndex: RewardRow[] }) 
               <div className="mt-1 flex flex-wrap items-center justify-between gap-2 text-sm text-zinc-300">
                 <div>
                   {t(language, "rewards_from")}{" "}
-                  <span className="text-zinc-100">{l(language, r.questName)}</span>
+                  <span className="text-zinc-100">
+                    {l(language, r.questName)}
+                  </span>
                 </div>
 
-                <Link
-                  href={`/acts/${r.actId}?questId=${encodeURIComponent(r.questId)}`}
-                  className="text-xs text-amber-300 underline decoration-amber-500/40 underline-offset-2 hover:text-amber-200"
-                >
-                  {t(language, "rewards_openQuest")}
-                </Link>
+                <div className="flex items-center gap-3">
+                  <Link
+                    href={`/acts/${r.actId}?questId=${encodeURIComponent(
+                      r.questId
+                    )}`}
+                    className="text-xs text-amber-300 underline decoration-amber-500/40 underline-offset-2 hover:text-amber-200"
+                  >
+                    {t(language, "rewards_openQuest")}
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      const rel = `/acts/${r.actId}?questId=${encodeURIComponent(r.questId)}`;
+                      const full = `${window.location.origin}${rel}`;
+                      const ok = await safeCopy(full);
+                      toast(t(language, "common_linkCopied"), ok ? "success" : "info");
+                    }}
+                    className="text-xs text-zinc-300 underline decoration-zinc-600 underline-offset-2 hover:text-zinc-100"
+                    title={t(language, "rewards_copyQuestLink_title")}
+                  >
+                    {t(language, "rewards_copyQuestLink")}
+                  </button>
+                </div>
               </div>
 
               {r.rewardType === "flask_choice" && r.choices?.length ? (

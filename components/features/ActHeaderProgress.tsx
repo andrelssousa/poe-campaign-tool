@@ -4,21 +4,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAppStore } from "@/store/useAppStore";
 import { t } from "@/lib/i18n";
-
-function clamp(n: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, n));
-}
-
-function pct(done: number, total: number) {
-  if (!total) return 0;
-  return clamp(Math.round((done / total) * 100), 0, 100);
-}
-
-// XP-style level: 0–9% => LV 1 ... 90–99% => LV 10, 100% stays LV 10.
-function levelFromPercent(percent: number) {
-  if (percent >= 100) return 10;
-  return clamp(Math.floor(percent / 10) + 1, 1, 10);
-}
+import { levelFromPercent, pct } from "@/lib/progress";
 
 export function ActHeaderProgress({
   actName,

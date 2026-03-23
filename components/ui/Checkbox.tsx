@@ -1,4 +1,4 @@
-// components/ui/Checkbox.tsx
+// src/components/ui/Checkbox.tsx
 "use client";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 
 export function Checkbox({ checked, onChange, label }: Props) {
   return (
-    <label className="inline-flex cursor-pointer items-center gap-2 select-none">
+    <label className="inline-flex cursor-pointer select-none items-center gap-2">
       <input
         type="checkbox"
         checked={checked}

@@ -1,14 +1,26 @@
 // app/acts/[actId]/page.tsx
-import fs from "node:fs";
-import path from "node:path";
+// app/acts/[actId]/page.tsx
 import Link from "next/link";
+import { readGenerated } from "@/lib/readGenerated.server";
 import { ActQuestList } from "@/components/features/ActQuestList";
 import { ClientT } from "@/components/ui/ClientT";
 import { ActHeaderProgress } from "@/components/features/ActHeaderProgress";
 
-function readGenerated(fileName: string) {
-  const full = path.join(process.cwd(), "data", "generated", fileName);
-  return JSON.parse(fs.readFileSync(full, "utf-8"));
+type ActLike = {
+  id?: number;
+  name?: unknown;
+  slug?: unknown;
+  questsInOrder?: unknown;
+};
+
+function isActLike(x: unknown): x is ActLike {
+  return typeof x === "object" && x !== null;
+}
+
+function getQuestsInOrder(act: ActLike): string[] {
+  const v = act.questsInOrder;
+  if (!Array.isArray(v)) return [];
+  return v.filter((q): q is string => typeof q === "string");
 }
 
 export default async function ActPage({
@@ -18,12 +30,26 @@ export default async function ActPage({
 }) {
   const { actId } = await params;
 
-  const actById = readGenerated("actById.json") as Record<string, any>;
-  const questById = readGenerated("questById.json") as Record<string, any>;
+  // ✅ no any
+  const actById = readGenerated<Record<string, unknown>>("actById.json");
+  const questById = readGenerated<Record<string, unknown>>("questById.json");
 
-  const act = actById[actId];
+  const direct = actById[actId];
+  const numeric = actById[String(Number(actId))];
+  const actPrefixed = actById[`act${actId}`];
 
-  if (!act) {
+  const found =
+    direct ??
+    numeric ??
+    actPrefixed ??
+    Object.values(actById).find((a) => {
+      if (!isActLike(a)) return false;
+      const id = a.id;
+      const slug = a.slug;
+      return String(id) === actId || String(slug) === actId;
+    });
+
+  if (!isActLike(found)) {
     return (
       <main>
         <h1 className="text-2xl font-bold">
@@ -36,10 +62,13 @@ export default async function ActPage({
     );
   }
 
+  const questsInOrder = getQuestsInOrder(found);
+  const actName = typeof found.name === "string" ? found.name : `Act ${found.id ?? ""}`;
+
   return (
     <main>
       <div className="mb-3 flex items-baseline justify-between gap-3">
-        <h1 className="text-2xl font-bold">{act.name}</h1>
+        <h1 className="text-2xl font-bold">{actName}</h1>
         <Link
           href="/acts"
           className="text-sm text-zinc-300 underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40"
@@ -49,9 +78,9 @@ export default async function ActPage({
       </div>
 
       {/* Sticky progress header (client) */}
-      <ActHeaderProgress actName={act.name} questIdsInOrder={act.questsInOrder} />
+      <ActHeaderProgress actName={String(actName)} questIdsInOrder={questsInOrder} />
 
-      <ActQuestList questIdsInOrder={act.questsInOrder} questById={questById} />
+      <ActQuestList questIdsInOrder={questsInOrder} questById={questById as any} />
     </main>
   );
 }

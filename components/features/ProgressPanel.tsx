@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { useAppStore } from "@/store/useAppStore";
-import { t } from "@/lib/i18n";
+import { t, tAny } from "@/lib/i18n";
 import type { ActInfo } from "@/lib/progress";
 import { actProgressMap, overallProgress } from "@/lib/progress";
 
@@ -32,12 +32,24 @@ export function ProgressPanel({
   }, [acts]);
 
   const overall = useMemo(() => {
-    if (!hasHydrated) return { done: 0, total: totalQuests, percent: 0, level: 1, complete: false };
+    if (!hasHydrated)
+      return {
+        done: 0,
+        total: totalQuests,
+        percent: 0,
+        level: 1,
+        complete: false,
+      };
     return overallProgress(completedQuestIds, totalQuests);
   }, [completedQuestIds, totalQuests, hasHydrated]);
 
   const actProg = useMemo(() => {
-    if (!hasHydrated) return new Map<number, { done: number; total: number; percent: number; complete: boolean }>();
+    if (!hasHydrated || actsSorted.length === 0) {
+      return new Map<
+        number,
+        { done: number; total: number; percent: number; complete: boolean }
+      >();
+    }
     return actProgressMap(actsSorted, completedQuestIds);
   }, [actsSorted, completedQuestIds, hasHydrated]);
 
@@ -45,7 +57,7 @@ export function ProgressPanel({
     <section className={dense ? "" : "mt-4"}>
       {titleKey ? (
         <div className="mb-2 text-sm font-semibold text-zinc-200">
-          {t(language, titleKey as any)}
+          {tAny(language, titleKey)}
         </div>
       ) : null}
 
@@ -72,7 +84,9 @@ export function ProgressPanel({
                   {overall.done}/{overall.total}
                 </span>{" "}
                 <span className="text-zinc-500">•</span>{" "}
-                <span className="font-semibold text-zinc-100">{overall.percent}%</span>
+                <span className="font-semibold text-zinc-100">
+                  {overall.percent}%
+                </span>
               </>
             )}
           </div>
@@ -81,7 +95,9 @@ export function ProgressPanel({
             <span className="rounded-full border border-zinc-700 bg-zinc-900 px-2 py-0.5 text-xs text-zinc-200">
               {t(language, "common_levelShort")} {overall.level}
             </span>
-            <span className="text-xs text-zinc-500">{t(language, "common_xpStyle")}</span>
+            <span className="text-xs text-zinc-500">
+              {t(language, "common_xpStyle")}
+            </span>
           </div>
         </div>
 
@@ -99,7 +115,12 @@ export function ProgressPanel({
         {actsSorted.length ? (
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {actsSorted.map((act) => {
-              const p = actProg.get(act.id) ?? { done: 0, total: 0, percent: 0, complete: false };
+              const p = actProg.get(act.id) ?? {
+                done: 0,
+                total: 0,
+                percent: 0,
+                complete: false,
+              };
 
               const Card = (
                 <div className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-3">
@@ -139,7 +160,7 @@ export function ProgressPanel({
               return (
                 <Link
                   key={act.id}
-                  href={`/acts/${act.id}`}
+                  href={`/acts/${act.slug?.trim() ? act.slug : act.id}`}
                   className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 rounded-xl"
                 >
                   {Card}

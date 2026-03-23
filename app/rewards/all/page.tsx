@@ -1,4 +1,4 @@
-// src/app/rewards/all/page.tsx
+// app/rewards/all/page.tsx
 import { readGenerated } from "@/lib/readGenerated.server";
 import { RewardsBrowser } from "@/components/features/RewardsBrowser";
 import { ClientT } from "@/components/ui/ClientT";

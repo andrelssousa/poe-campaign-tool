@@ -1,4 +1,4 @@
-// src/app/rewards/page.tsx
+// app/rewards/page.tsx
 import Link from "next/link";
 import { ClientT } from "@/components/ui/ClientT";
 

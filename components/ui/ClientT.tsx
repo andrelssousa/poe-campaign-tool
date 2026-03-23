@@ -2,10 +2,17 @@
 "use client";
 
 import { useAppStore } from "@/store/useAppStore";
-import { t, type TKey } from "@/lib/i18n";
+import { tAny, type TKey } from "@/lib/i18n";
 
-export function ClientT({ k, fallback }: { k: TKey; fallback?: string }) {
+type Props = {
+  k: TKey | string;
+  fallback?: string;
+};
+
+export function ClientT({ k, fallback }: Props) {
   const language = useAppStore((s) => s.language);
-  const v = t(language, k);
+
+  const v = tAny(language, k);
+
   return <>{v || fallback || ""}</>;
 }

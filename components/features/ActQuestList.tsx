@@ -289,7 +289,9 @@ export function ActQuestList({
 
         <Checkbox
           checked={showUncompletedOnly}
-          onChange={() => toggleShowUncompletedOnly()}
+          onChange={(next) => {
+            if (next !== showUncompletedOnly) toggleShowUncompletedOnly();
+          }}
           label={t(language, "showUncompletedOnly")}
         />
       </div>
@@ -319,7 +321,9 @@ export function ActQuestList({
                   <div className="flex items-center gap-3">
                     <Checkbox
                       checked={done}
-                      onChange={() => toggleQuestCompleted(quest.id)}
+                      onChange={(next) => {
+                        if (next !== done) toggleQuestCompleted(quest.id);
+                      }}
                     />
 
                     <div className="truncate font-semibold text-white">
@@ -355,7 +359,18 @@ export function ActQuestList({
                     {rewardCount} {t(language, "rewards_countLabel")}
                   </div>
 
-                  <div className="mt-1 inline-flex items-center gap-2">
+                  <div className="mt-1 inline-flex items-center justify-end gap-2">
+                    {highlightQuestId === quest.id ? (
+                      <span
+                        className="stl-ping-wrap"
+                        aria-label="Highlighted quest"
+                        title="Highlighted quest"
+                      >
+                        <span className="stl-ping-ring" />
+                        <span className="stl-ping-dot" />
+                      </span>
+                    ) : null}
+
                     <span className="rounded-full border border-zinc-700 bg-zinc-900 px-2 py-0.5 text-[11px] text-zinc-200">
                       XP {done ? `+${xp}` : xp}
                     </span>

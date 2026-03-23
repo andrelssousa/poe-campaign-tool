@@ -25,7 +25,11 @@ export function levelFromPercent(percent: number) {
 }
 
 export function countCompleted(completedQuestIds: CompletedQuestIds) {
-  return Object.values(completedQuestIds).filter(Boolean).length;
+  let n = 0;
+  for (const k in completedQuestIds) {
+    if (completedQuestIds[k]) n += 1;
+  }
+  return n;
 }
 
 export function overallProgress(completedQuestIds: CompletedQuestIds, totalQuests: number) {
@@ -36,18 +40,20 @@ export function overallProgress(completedQuestIds: CompletedQuestIds, totalQuest
   return { done, total: totalQuests, percent, level, complete };
 }
 
-export function actProgressMap(
-  acts: ActInfo[],
-  completedQuestIds: CompletedQuestIds
-) {
-  const map = new Map<number, { done: number; total: number; percent: number; complete: boolean }>();
+type Progress = { done: number; total: number; percent: number; complete: boolean };
+
+export function actProgressMap(acts: ActInfo[], completedQuestIds: CompletedQuestIds) {
+  const map = new Map<number, Progress>();
 
   for (const act of acts) {
-    const total = act.questsInOrder?.length ?? 0;
+    const ids = act.questsInOrder ?? [];
+    const total = ids.length;
+
     let done = 0;
-    for (const qid of act.questsInOrder ?? []) {
+    for (const qid of ids) {
       if (completedQuestIds[qid]) done += 1;
     }
+
     const percent = pct(done, total);
     map.set(act.id, { done, total, percent, complete: total > 0 && done >= total });
   }

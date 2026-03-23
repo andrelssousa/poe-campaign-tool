@@ -1,4 +1,4 @@
-// components/features/TopBar.tsx
+// src/components/features/TopBar.tsx
 "use client";
 
 import Link from "next/link";
@@ -6,26 +6,20 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useAppStore } from "@/store/useAppStore";
 import { t } from "@/lib/i18n";
-import type { ActInfo } from "@/lib/progress";
-import { actProgressMap, overallProgress } from "@/lib/progress";
-
-const CLASSES = [
-  "Marauder",
-  "Ranger",
-  "Witch",
-  "Duelist",
-  "Templar",
-  "Shadow",
-  "Scion",
-] as const;
+import { actProgressMap, countCompleted, overallProgress } from "@/lib/progress";
+import { CLASSES } from "@/lib/generatedTypes";
+import type { ActById, ActGenerated } from "@/lib/generatedTypes";
 
 export function TopBar({
   totalQuests,
   actById,
 }: {
   totalQuests: number;
-  actById: Record<string, ActInfo>;
+  actById: ActById;
 }) {
+  const pathname = usePathname();
+  const showActMiniBars = pathname === "/acts"; // IMPORTANT: prevents bar stacking everywhere
+
   const selectedClass = useAppStore((s) => s.selectedClass);
   const setSelectedClass = useAppStore((s) => s.setSelectedClass);
 
@@ -33,18 +27,19 @@ export function TopBar({
   const setLanguage = useAppStore((s) => s.setLanguage);
 
   const resetProgress = useAppStore((s) => s.resetProgress);
-  const pathname = usePathname();
 
   const completedQuestIds = useAppStore((s) => s.completedQuestIds);
   const hasHydrated = useAppStore((s) => s.hasHydrated);
 
   const completedCount = useMemo(
-    () => Object.values(completedQuestIds).filter(Boolean).length,
+    () => countCompleted(completedQuestIds),
     [completedQuestIds]
   );
 
   const overall = useMemo(() => {
-    if (!hasHydrated) return { done: 0, total: totalQuests, percent: 0, level: 1, complete: false };
+    if (!hasHydrated) {
+      return { done: 0, total: totalQuests, percent: 0, level: 1, complete: false };
+    }
     return overallProgress(completedQuestIds, totalQuests);
   }, [completedQuestIds, totalQuests, hasHydrated]);
 
@@ -62,21 +57,25 @@ export function TopBar({
       prevCompletedRef.current = completedCount;
       return () => window.clearTimeout(h);
     }
+
     prevCompletedRef.current = completedCount;
   }, [completedCount, hasHydrated]);
 
-  // ---- per-act progress (only show on /acts index) ----
-  const showActMiniBars = pathname === "/acts"; // IMPORTANT: prevents bar stacking everywhere
-
   const actsSorted = useMemo(() => {
-    const acts = Object.values(actById || {});
-    return acts.sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
-  }, [actById]);
+    if (!showActMiniBars) return [];
+
+    // actById is a map: { "1": {...}, "2": {...} }
+    const acts = Object.values(actById || {}) as ActGenerated[];
+
+    return acts.slice().sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
+  }, [actById, showActMiniBars]);
 
   const actProg = useMemo(() => {
-    if (!hasHydrated) return new Map<number, { done: number; total: number; percent: number; complete: boolean }>();
+    if (!showActMiniBars || !hasHydrated) {
+      return new Map<number, { done: number; total: number; percent: number; complete: boolean }>();
+    }
     return actProgressMap(actsSorted, completedQuestIds);
-  }, [actsSorted, completedQuestIds, hasHydrated]);
+  }, [actsSorted, completedQuestIds, hasHydrated, showActMiniBars]);
 
   function isActive(href: string) {
     if (href === "/") return pathname === "/";
@@ -241,7 +240,7 @@ export function TopBar({
             return (
               <Link
                 key={act.id}
-                href={`/acts/${act.id}`}
+                href={`/acts/${act.slug?.trim() ? act.slug : act.id}`}
                 className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-3 hover:bg-zinc-900/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50"
               >
                 <div className="flex items-center justify-between gap-2 text-sm">
